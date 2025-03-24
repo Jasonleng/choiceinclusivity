@@ -4211,3 +4211,15 @@ model.conflict.ns.n1 <- lmerTest::lmer(conflict ~ catChoiceCondition * poly(scal
 
 tab_model(model.conflict.12.n1,model.conflict.ns.n1,transform = NULL,show.re.var = F,pred.labels = c("Intercept","Inclusivity","Overall Value","Overall Value^2","Relative Value","Trial Order","Incl by OV","Incl by OV^2","Incl by RV"),dv.labels = c("Study 1","Study 3A"),show.icc=F,show.ngroups = F,show.obs = F,show.r2 = F,show.stat = T)
 ```
+
+
+
+```{r}
+
+df.total.rt.cfl.6$scaledRT<-scale(log10(df.total.rt.cfl.6$firstRT))
+df.total.rt.cfl.6$catAcc<-factor(df.total.rt.cfl.6$isBestFirst)
+contrasts(df.total.rt.cfl.6$catAcc)<-contr.sdif
+
+model.rating.cfl.choice <- lmerTest::lmer(conflict ~ scaledRT + catAcc + catChoiceCondition * (poly(scaledMeanValue,2) + scaledValueDiff) + scaledTrialNum + (1 + scaledRT + catAcc + catChoiceCondition * (poly(scaledMeanValue,2) + scaledValueDiff) + scaledTrialNum|participant),data=df.total.rt.cfl.6,control=lmerControl(optCtrl=list(maxfun=100000)))
+
+```
